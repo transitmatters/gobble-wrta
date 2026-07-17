@@ -1,0 +1,17 @@
+[project]
+name = "gobble-wrta"
+version = "0.1.0"
+description = "Process WRTA events into a format that can be consumed by the Data Dashboard and an unofficial GTFS Realtime feed"
+authors = ["TransitMatters Labs <labs@transitmatters.org>"]
+readme = "README.md"
+requires-python = ">=3.13"
+license = "MIT"
+dependencies = [
+    "gtfs-realtime-bindings>=2.1.0",
+    "pandas>=3.0.3",
+]
+
+[dependency-groups]
+dev = [
+    "pandas-stubs>=3.0.3.260530",
+]
