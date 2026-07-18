@@ -7,17 +7,26 @@ services:
     expose:
       - "8080"
 
+  data-browser:
+    image: svenstaro/miniserve:latest
+    restart: unless-stopped
+    command: ["/data", "--enable-zip", "--enable-tar-gz", "--route-prefix", "daily-bus-data"]
+    volumes:
+      - ./data/daily-bus-data:/data:ro
+    expose:
+      - "8080"
+
   web:
     image: caddy:2-alpine
     restart: unless-stopped
     depends_on:
       - gobble
+      - data-browser
     ports:
       - "80:80"
       - "443:443"
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./data:/srv/data:ro
       - caddy_data:/data
 
 volumes:

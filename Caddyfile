@@ -7,8 +7,7 @@
 		reverse_proxy gobble:8080
 	}
 
-	handle_path /daily-bus-data/* {
-		root * /srv/data/daily-bus-data
-		file_server browse
+	handle /daily-bus-data/* {
+		reverse_proxy data-browser:8080
 	}
 }

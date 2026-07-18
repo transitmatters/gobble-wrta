@@ -37,7 +37,7 @@ Not yet supported: trip start time, schedule relationship, vehicle license plate
 
 ## Deploying to production
 
-`docker-compose.yml` runs gobble-wrta alongside a Caddy front door that reverse-proxies the GTFS-RT feed (`/vehiclepositions.pb`, `/tripupdates.pb`) and serves `data/daily-bus-data/` read-only for browsing/download.
+`docker-compose.yml` runs gobble-wrta alongside a Caddy front door that reverse-proxies the GTFS-RT feed (`/vehiclepositions.pb`, `/tripupdates.pb`) and, via a `miniserve` container, serves `data/daily-bus-data/` read-only for browsing at `/daily-bus-data/`. Any folder -- the top-level directory or an individual stop's subfolder -- can be downloaded as an archive by appending `?download=zip` (or `tar_gz`) to its URL, or using the download link in the directory listing. Note: zip archives are built in memory, so avoid zipping the top-level folder once it grows large; prefer `tar_gz`, which streams.
 
 To stand up a fresh DigitalOcean droplet from this config:
 
