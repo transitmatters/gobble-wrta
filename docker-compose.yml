@@ -1,0 +1,24 @@
+services:
+  gobble:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - ./data:/app/data
+    expose:
+      - "8080"
+
+  web:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - gobble
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./data:/srv/data:ro
+      - caddy_data:/data
+
+volumes:
+  caddy_data:

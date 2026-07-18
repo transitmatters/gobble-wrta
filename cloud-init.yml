@@ -1,0 +1,8 @@
+#cloud-config
+packages:
+  - git
+
+runcmd:
+  - curl -fsSL https://get.docker.com | sh
+  - git clone https://github.com/transitmatters/gobble-wrta.git /opt/gobble-wrta
+  - cd /opt/gobble-wrta && docker compose up -d --build

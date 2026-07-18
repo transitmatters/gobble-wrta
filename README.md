@@ -30,6 +30,28 @@ Not yet supported: trip start time, schedule relationship, vehicle license plate
 2. Run `uv run src/gobble.py` to start.
 3. Output will be in `data/` in your current working directory.
 
+## Running with Docker
+
+1. Build the image: `docker build -t gobble-wrta .`
+2. Run it: `docker run -p 8080:8080 gobble-wrta`
+
+## Deploying to production
+
+`docker-compose.yml` runs gobble-wrta alongside a Caddy front door that reverse-proxies the GTFS-RT feed (`/vehiclepositions.pb`, `/tripupdates.pb`) and serves `data/daily-bus-data/` read-only for browsing/download.
+
+To stand up a fresh DigitalOcean droplet from this config:
+
+```
+doctl compute droplet create gobble-wrta-prod \
+  --image ubuntu-24-04-x64 \
+  --size s-1vcpu-1gb \
+  --region nyc3 \
+  --ssh-keys <your-ssh-key-fingerprint> \
+  --user-data-file cloud-init.yml
+```
+
+`cloud-init.yml` installs Docker, clones this repo, and runs `docker compose up -d` on first boot -- no manual SSH setup required. If you point a domain at the droplet, replace `:80` in the `Caddyfile` with that domain and Caddy will provision HTTPS automatically.
+
 ## Support TransitMatters
 
 If you've found this app helpful or interesting, please consider [donating](https://transitmatters.org/donate) to TransitMatters to help support our mission to provide data-driven advocacy for a more reliable, sustainable, and equitable transit system in Metropolitan Boston.
