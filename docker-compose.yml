@@ -22,6 +22,8 @@ services:
     depends_on:
       - gobble
       - data-browser
+    environment:
+      - SITE_ADDRESS=${SITE_ADDRESS:-:80}
     ports:
       - "80:80"
       - "443:443"

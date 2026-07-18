@@ -35,22 +35,10 @@ Not yet supported: trip start time, schedule relationship, vehicle license plate
 1. Build the image: `docker build -t gobble-wrta .`
 2. Run it: `docker run -p 8080:8080 gobble-wrta`
 
-## Deploying to production
+`docker-compose.yml` runs gobble-wrta alongside a Caddy front door that reverse-proxies the GTFS-RT feed (`/vehiclepositions.pb`, `/tripupdates.pb`) and, via a `miniserve` container, serves `data/daily-bus-data/` read-only for browsing at `/daily-bus-data/`.
 
-`docker-compose.yml` runs gobble-wrta alongside a Caddy front door that reverse-proxies the GTFS-RT feed (`/vehiclepositions.pb`, `/tripupdates.pb`) and, via a `miniserve` container, serves `data/daily-bus-data/` read-only for browsing at `/daily-bus-data/`. Any folder -- the top-level directory or an individual stop's subfolder -- can be downloaded as an archive by appending `?download=zip` (or `tar_gz`) to its URL, or using the download link in the directory listing. Note: zip archives are built in memory, so avoid zipping the top-level folder once it grows large; prefer `tar_gz`, which streams.
+Copy `.env.example` to `.env` and set `SITE_ADDRESS` to your domain to have Caddy serve on it with automatic HTTPS; leave it unset for plain `:80`.
 
-To stand up a fresh DigitalOcean droplet from this config:
-
-```
-doctl compute droplet create gobble-wrta-prod \
-  --image ubuntu-24-04-x64 \
-  --size s-1vcpu-1gb \
-  --region nyc3 \
-  --ssh-keys <your-ssh-key-fingerprint> \
-  --user-data-file cloud-init.yml
-```
-
-`cloud-init.yml` installs Docker, clones this repo, and runs `docker compose up -d` on first boot -- no manual SSH setup required. If you point a domain at the droplet, replace `:80` in the `Caddyfile` with that domain and Caddy will provision HTTPS automatically.
 
 ## Support TransitMatters
 

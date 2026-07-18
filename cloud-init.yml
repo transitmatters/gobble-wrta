@@ -5,4 +5,7 @@ packages:
 runcmd:
   - curl -fsSL https://get.docker.com | sh
   - git clone https://github.com/transitmatters/gobble-wrta.git /opt/gobble-wrta
+  # Replace with the real domain before passing this file to `doctl droplet create`.
+  # DNS for it must already point at this droplet's IP so Caddy can issue a cert on first boot.
+  - printf 'SITE_ADDRESS=CHANGE_ME.example.com\n' > /opt/gobble-wrta/.env
   - cd /opt/gobble-wrta && docker compose up -d --build
