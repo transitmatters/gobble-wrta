@@ -1,4 +1,9 @@
 {$SITE_ADDRESS:80} {
+	handle / {
+		root * /srv
+		file_server
+	}
+
 	handle /vehiclepositions.pb {
 		reverse_proxy gobble:8080
 	}
