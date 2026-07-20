@@ -71,7 +71,10 @@ def update_current_topology_if_necessary():
 
 def update_topology_thread():
     while True:
-        update_current_topology_if_necessary()
+        try:
+            update_current_topology_if_necessary()
+        except Exception:
+            logger.exception("Error updating topology; will retry next cycle")
         time.sleep(VERSION_POLL_SECONDS)
 
 

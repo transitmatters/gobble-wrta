@@ -145,7 +145,10 @@ def update_current_gtfs_if_necessary():
 
 def update_gtfs_thread():
     while True:
-        update_current_gtfs_if_necessary()
+        try:
+            update_current_gtfs_if_necessary()
+        except Exception:
+            logger.exception("Error updating GTFS; will retry next cycle")
         time.sleep(10)
 
 
