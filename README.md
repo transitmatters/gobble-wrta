@@ -22,7 +22,7 @@ Not yet supported: trip start time, schedule relationship, vehicle license plate
 ## Requirements to develop locally
 
 - [`uv`](https://docs.astral.sh/uv/) with Python 3.13
-  - Ensure `uv` is using the correct Python version by running `uv venv --python 3.13`
+  - With [mise](https://mise.jdx.dev) installed, `mise trust && mise install` sets up Python (pinned in `.python-version`)
 
 ## Development Instructions
 
