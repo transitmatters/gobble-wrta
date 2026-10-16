@@ -30,6 +30,23 @@ Not yet supported: trip start time, schedule relationship, vehicle license plate
 2. Run `uv run src/gobble.py` to start.
 3. Output will be in `data/` in your current working directory.
 
+The GTFS Realtime feeds are served at `http://localhost:8080/vehiclepositions.pb` and `http://localhost:8080/tripupdates.pb`. There's no test suite or linter yet.
+
+## Project Structure
+
+```
+src/
+  gobble.py       # Entry point: starts the GTFS/topology watchers, the GTFS-RT server, and the poll loop
+  swiv.py         # Client for WRTA's CAD/AVL ("SWIV") API
+  poll_loop.py    # Main loop: polls vehicle positions every few seconds
+  lookups.py      # Maps the vendor's route/stop IDs to GTFS IDs
+  event.py        # Detects arrivals/departures from successive polls
+  disk.py         # Writes Data Dashboard-style CSVs to data/daily-bus-data/
+  gtfs_rt.py      # Builds the GTFS Realtime feeds served by rt_server.py
+html/             # Landing page served by Caddy
+cloud-init.yml    # Bootstraps a droplet that runs docker-compose.yml
+```
+
 ## Running with Docker
 
 1. Build the image: `docker build -t gobble-wrta .`
